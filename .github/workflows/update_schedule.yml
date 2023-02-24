@@ -1,0 +1,36 @@
+---
+name: "Update daily - Horoscope"
+on:
+  schedule:
+  - cron: "1 0 * * *"
+
+jobs:
+  build_jour:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Generate JSON
+      run: |
+        cd docs
+        FILE_WORK='website'
+        FILE='jour_tmp.json'
+        curl -s http://www.astroo.com/horoscope.php > ${FILE_WORK}
+        echo "{" > $FILE
+        echo "\"date\": '\"$()\""
+        for SIGNE in BELIER TAUREAU GEMEAUX CANCER LION VIERGE BALANCE SCORPION SAGITTAIRE CAPRICORNE VERSEAU POISSONS; do 
+	        echo "  \"${SIGNE,,}\": \"$(cat ${FILE_WORK} |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }' |recode html..utf8)\"," >> $FILE
+        done
+        echo "}" >> $FILE
+    # lint + copie + clean
+    - name: Commit JSON
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add docs/jour_tmp.json
+        git commit -m "Generated jour.json" || true
+        git pull --rebase
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+      continue-on-error: true
