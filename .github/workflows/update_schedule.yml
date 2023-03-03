@@ -8,9 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: curl
-      uses: wei/curl@master
-      with:
-        args: http://www.astroo.com/horoscope.php
+      run: curl -s http://www.astroo.com/horoscope.php -o docs/jour_tmp.json
     # lint + copie + clean
     - name: Commit JSON
       run: |
