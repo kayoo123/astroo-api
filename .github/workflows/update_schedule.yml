@@ -12,11 +12,15 @@ jobs:
       run: curl -s http://www.astroo.com/horoscope.php -o website.html
     - name: extract data
       run: |
+        file -I website.html
+        file -bI website.html
         echo "{" > docs/jour_tmp.json
-        echo "  \"date\": \"$(date +%F)\"" >> docs/jour_tmp.json
+        echo "  \"date\": \"$(date +%F)\"," >> docs/jour_tmp.json
         for SIGNE in BELIER TAUREAU GEMEAUX CANCER LION VIERGE BALANCE SCORPION SAGITTAIRE CAPRICORNE VERSEAU POISSONS; do echo "  \"${SIGNE,,}\": \"$(cat website.html |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }')\"," >> docs/jour_tmp.json ; done
         sed -i '$ s/.$//' docs/jour_tmp.json
         echo "}" >> docs/jour_tmp.json
+        file -I docs/jour_tmp.json
+        file -bI docs/jour_tmp.json
         iconv -f ISO-8859-1 -t UTF-8 docs/jour_tmp.json > docs/jour.json
     - name: Commit JSON
       run: |
