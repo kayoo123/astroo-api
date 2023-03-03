@@ -2,32 +2,39 @@
 name: "Update daily - Horoscope"
 on: push
 
+env:
+  FILE_WEBSITE: website.html
+  URL: http://www.astroo.com/horoscope.php
+
 jobs:
 
   build_jour:
     runs-on: ubuntu-latest
+    env:
+      FILE: docs/jour.json
+      FILE_TMP: docs/jour_tmp.json
     steps:
     - uses: actions/checkout@v3
     - name: get Website
-      run: curl -s http://www.astroo.com/horoscope.php -o website.html
+      run: curl -s $URL -o $FILE_WEBSITE
     - name: extract data
       run: |
-        echo "{" > docs/jour_tmp.json
-        echo " \"date\": \"$(date +%F)\"," >> docs/jour_tmp.json
-        for SIGNE in BELIER TAUREAU GEMEAUX CANCER LION VIERGE BALANCE SCORPION SAGITTAIRE CAPRICORNE VERSEAU POISSONS; do echo "  \"${SIGNE,,}\": \"$(cat website.html |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }')\"," >> docs/jour_tmp.json ; done
-        sed -i '$ s/.$//' docs/jour_tmp.json
-        echo "}" >> docs/jour_tmp.json
+        echo "{" > $FILE_TMP
+        echo " \"date\": \"$(date +%F)\"," >> $FILE_TMP
+        for SIGNE in BELIER TAUREAU GEMEAUX CANCER LION VIERGE BALANCE SCORPION SAGITTAIRE CAPRICORNE VERSEAU POISSONS; do echo "  \"${SIGNE,,}\": \"$(cat $FILE_WEBSITE |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }')\"," >> $FILE_TMP ; done
+        sed -i '$ s/.$//' $FILE_TMP
+        echo "}" >> $FILE_TMP
     - name: recode UTF8
       run: |
         sudo apt-get update
         sudo apt-get -y install recode
-        cat docs/jour_tmp.json | recode html..utf8 > docs/jour.json
+        cat $FILE_TMP | recode html..utf8 > $FILE
     - name: Commit JSON
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add docs/jour.json
-        git commit -m "Generated jour.json" || true
+        git add $FILE
+        git commit -m "Generated $FILE" || true
         git pull --rebase
     - name: Push changes
       uses: ad-m/github-push-action@master
