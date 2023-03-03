@@ -59,9 +59,10 @@ jobs:
         for SIGNE in $LIST_SIGNES; do curl -s http://www.astroo.com/horoscopes/horoscope_hebdo_${SIGNE,,}.php -o ${SIGNE}.html; done
     - name: extract data
       run: |
+        ls *.html
         echo "{" > $FILE_TMP
         echo "  \"date\": \"$(date +%F)\"," >> $FILE_TMP
-        for SIGNE in $LIST_SIGNES; do echo "  \"${SIGNE,,}\": \"$(cat ${SIGNE}.html |awk -v RS="</*td>" '/class="hhte" valign="top"/{if (++n == 1) print $0}' |sed 's/<td class="hhte" valign="top">//g' |sed 's/<br>//g' |tr -d '\n'\"," >> $FILE_TMP ; done
+        for SIGNE in $LIST_SIGNES; do echo "  \"${SIGNE,,}\": \"$(cat ${SIGNE}.html |awk -v RS=\"</*td>\" '/class=\"hhte\" valign=\"top\"/{if (++n == 1) print $0}' |sed 's/<td class=\"hhte\" valign=\"top\">//g' |sed 's/<br>//g' |tr -d '\n'\"," >> $FILE_TMP ; done
         sed -i '$ s/.$//' $FILE_TMP
         echo "}" >> $FILE_TMP
     - name: recode UTF8
