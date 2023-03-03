@@ -14,15 +14,15 @@ jobs:
       run: |
         echo "{" > docs/jour_tmp.json
         echo "  \"date\": \"$(date +%F)\"" >> docs/jour_tmp.json
-        for SIGNE in BELIER TAUREAU GEMEAUX CANCER LION VIERGE BALANCE SCORPION SAGITTAIRE CAPRICORNE VERSEAU POISSONS; do echo "  \"${SIGNE,,}\": \"$(cat website.html |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }' |recode html..utf8)\"," >> docs/jour_tmp.json ; done
+        for SIGNE in BELIER TAUREAU GEMEAUX CANCER LION VIERGE BALANCE SCORPION SAGITTAIRE CAPRICORNE VERSEAU POISSONS; do echo "  \"${SIGNE,,}\": \"$(cat website.html |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }')\"," >> docs/jour_tmp.json ; done
         sed -i '$ s/.$//' docs/jour_tmp.json
         echo "}" >> docs/jour_tmp.json
-    # lint + copie + clean
+        iconv -f ISO-8859-1 -t UTF-8 docs/jour_tmp.json > docs/jour.json
     - name: Commit JSON
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add docs/jour_tmp.json
+        git add docs/jour.json
         git commit -m "Generated jour.json" || true
         git pull --rebase
     - name: Push changes
