@@ -21,7 +21,7 @@ jobs:
     - name: extract data
       run: |
         echo "{" > $FILE_TMP
-        echo " \"date\": \"$(date +%F)\"," >> $FILE_TMP
+        echo "  \"date\": \"$(date +%F)\"," >> $FILE_TMP
         for SIGNE in $LIST_SIGNES; do echo "  \"${SIGNE,,}\": \"$(cat $FILE_WEBSITE |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }')\"," >> $FILE_TMP ; done
         sed -i '$ s/.$//' $FILE_TMP
         echo "}" >> $FILE_TMP
