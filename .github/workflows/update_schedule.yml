@@ -12,10 +12,10 @@ env:
 jobs:
 
   build_jour:
-    runs-on: ubuntu-latest
     env:
       FILE: docs/jour.json
       FILE_TMP: docs/jour_tmp.json
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: get Website
