@@ -1,18 +1,17 @@
 ---
 name: "Update daily - Horoscope"
-on:
-  schedule:
-    - cron: "0 1 * * *"
+on: push
+
 
 env:
   FILE_WEBSITE: website.html
-  URL: http://www.astroo.com/horoscope.php
   LIST_SIGNES: BELIER TAUREAU GEMEAUX CANCER LION VIERGE BALANCE SCORPION SAGITTAIRE CAPRICORNE VERSEAU POISSONS
 
 jobs:
 
   build_jour:
     env:
+      URL: http://www.astroo.com/horoscope.php
       FILE: docs/jour.json
       FILE_TMP: docs/jour_tmp.json
     runs-on: ubuntu-latest
@@ -25,6 +24,43 @@ jobs:
         echo "{" > $FILE_TMP
         echo "  \"date\": \"$(date +%F)\"," >> $FILE_TMP
         for SIGNE in $LIST_SIGNES; do echo "  \"${SIGNE,,}\": \"$(cat $FILE_WEBSITE |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }')\"," >> $FILE_TMP ; done
+        sed -i '$ s/.$//' $FILE_TMP
+        echo "}" >> $FILE_TMP
+    - name: recode UTF8
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install recode
+        cat $FILE_TMP | recode html..utf8 > $FILE
+    - name: Commit JSON
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add $FILE
+        git commit -m "Generated $FILE" || true
+        git pull --rebase
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+      continue-on-error: true
+
+
+  build_semaine:
+    env:
+      URL: http://www.astroo.com/horoscopes/horoscope_hebdo
+      FILE: docs/semaine.json
+      FILE_TMP: docs/semaine_tmp.json
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: get Website
+      run: |
+        for SIGNE in $LIST_SIGNES; do curl -s $URL_${SIGNE,,}.php -o ${SIGNE}.html; done
+    - name: extract data
+      run: |
+        echo "{" > $FILE_TMP
+        echo "  \"date\": \"$(date +%F)\"," >> $FILE_TMP
+        for SIGNE in $LIST_SIGNES; do echo "  \"${SIGNE,,}\": \"$(cat ${SIGNE}.html |awk -v RS="</*td>" '/class="hhte" valign="top"/{if (++n == 1) print $0}' |sed 's/<td class="hhte" valign="top">//g' |sed 's/<br>//g' |tr -d '\n'\"," >> $FILE_TMP ; done
         sed -i '$ s/.$//' $FILE_TMP
         echo "}" >> $FILE_TMP
     - name: recode UTF8
