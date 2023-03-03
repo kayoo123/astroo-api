@@ -5,6 +5,7 @@ on: push
 env:
   FILE_WEBSITE: website.html
   URL: http://www.astroo.com/horoscope.php
+  LIST_SIGNES: BELIER TAUREAU GEMEAUX CANCER LION VIERGE BALANCE SCORPION SAGITTAIRE CAPRICORNE VERSEAU POISSONS
 
 jobs:
 
@@ -21,7 +22,7 @@ jobs:
       run: |
         echo "{" > $FILE_TMP
         echo " \"date\": \"$(date +%F)\"," >> $FILE_TMP
-        for SIGNE in BELIER TAUREAU GEMEAUX CANCER LION VIERGE BALANCE SCORPION SAGITTAIRE CAPRICORNE VERSEAU POISSONS; do echo "  \"${SIGNE,,}\": \"$(cat $FILE_WEBSITE |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }')\"," >> $FILE_TMP ; done
+        for SIGNE in $LIST_SIGNES; do echo "  \"${SIGNE,,}\": \"$(cat $FILE_WEBSITE |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }')\"," >> $FILE_TMP ; done
         sed -i '$ s/.$//' $FILE_TMP
         echo "}" >> $FILE_TMP
     - name: recode UTF8
