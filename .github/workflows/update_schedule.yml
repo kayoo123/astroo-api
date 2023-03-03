@@ -13,8 +13,8 @@ jobs:
     - name: extract data
       run: |
         echo "{" > docs/jour_tmp.json
-        echo "  \"date\": '\"$(date +%F)\"" >> docs/jour_tmp.json
-        for SIGNE in BELIER TAUREAU GEMEAUX CANCER LION VIERGE BALANCE SCORPION SAGITTAIRE CAPRICORNE VERSEAU POISSONS; do echo "  \"${SIGNE,,}\": \"$(cat website.html |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }')\"," >> docs/jour_tmp.json ; done
+        echo "  \"date\": \"$(date +%F)\"" >> docs/jour_tmp.json
+        for SIGNE in BELIER TAUREAU GEMEAUX CANCER LION VIERGE BALANCE SCORPION SAGITTAIRE CAPRICORNE VERSEAU POISSONS; do echo "  \"${SIGNE,,}\": \"$(cat website.html |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }' |recode html..utf8)\"," >> docs/jour_tmp.json ; done
         sed -i '$ s/.$//' docs/jour_tmp.json
         echo "}" >> docs/jour_tmp.json
     # lint + copie + clean
