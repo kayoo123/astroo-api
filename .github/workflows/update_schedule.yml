@@ -60,10 +60,9 @@ jobs:
     - name: extract data
       run: |
         ## curl -s http://www.astroo.com/horoscopes/horoscope_hebdo_vierge.php |awk -v RS="</*td>" '/class="hhte" valign="top"/{if (++n == 1) print $0}' |sed 's/<td class="hhte" valign="top">//g' |sed 's/<br>//g' |tr -d '\n'
-        ls *.html
         echo "{" > $FILE_TMP
         echo "  \"date\": \"$(date +%F)\"," >> $FILE_TMP
-        for SIGNE in $LIST_SIGNES; do echo "  \"${SIGNE,,}\": \"$(cat ${SIGNE}.html |awk -v RS="</*td>" '/class="hhte" valign="top"/{if (++n == 1) print $0}'\"," >> $FILE_TMP ; done
+        #for SIGNE in $LIST_SIGNES; do echo "  \"${SIGNE,,}\": \"$(cat ${SIGNE}.html |awk -v RS="</*td>" '/class="hhte" valign="top"/{if (++n == 1) print $0}'\"," >> $FILE_TMP ; done
         sed -i '$ s/.$//' $FILE_TMP
         echo "}" >> $FILE_TMP
     - name: recode UTF8
