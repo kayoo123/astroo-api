@@ -17,6 +17,10 @@ jobs:
         for SIGNE in BELIER TAUREAU GEMEAUX CANCER LION VIERGE BALANCE SCORPION SAGITTAIRE CAPRICORNE VERSEAU POISSONS; do echo "  \"${SIGNE,,}\": \"$(cat website.html |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }')\"," >> docs/jour_tmp.json ; done
         sed -i '$ s/.$//' docs/jour_tmp.json
         echo "}" >> docs/jour_tmp.json
+    - name: recode UTF8
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install recode
         cat docs/jour_tmp.json | recode html..utf8 > docs/jour.json
     - name: Commit JSON
       run: |
