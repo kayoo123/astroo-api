@@ -13,12 +13,13 @@ jobs:
     - name: extract data
       run: |
         echo "{" > docs/jour_tmp.json
-        echo "  \"date\": \"$(date +%F)\"," >> docs/jour_tmp.json
+        echo " \"date\": \"$(date +%F)\"," >> docs/jour_tmp.json
         for SIGNE in BELIER TAUREAU GEMEAUX CANCER LION VIERGE BALANCE SCORPION SAGITTAIRE CAPRICORNE VERSEAU POISSONS; do echo "  \"${SIGNE,,}\": \"$(cat website.html |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }')\"," >> docs/jour_tmp.json ; done
         sed -i '$ s/.$//' docs/jour_tmp.json
         echo "}" >> docs/jour_tmp.json
         file -i docs/jour_tmp.json
         iconv -f US-ASCII -t UTF-8 docs/jour_tmp.json > docs/jour.json
+        file -i docs/jour.json
     - name: Commit JSON
       run: |
         git config --local user.email "action@github.com"
