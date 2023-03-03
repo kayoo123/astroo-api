@@ -1,10 +1,6 @@
 ---
 name: "Update daily - Horoscope"
-on:
-  push:
-    paths:
-      - '*.sh'
-
+on: push
 
 jobs:
   build_jour:
