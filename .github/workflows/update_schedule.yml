@@ -3,12 +3,20 @@ name: "Update daily - Horoscope"
 on: push
 
 jobs:
+
   build_jour:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: curl
-      run: curl -s http://www.astroo.com/horoscope.php -o docs/jour_tmp.json
+    - name: get Website
+      run: curl -s http://www.astroo.com/horoscope.php -o website.html
+    - name: extract data
+      run: |
+        echo "{" > docs/jour_tmp.json
+        echo "\"date\": '\"$()\"" >> docs/jour_tmp.json
+        for SIGNE in BELIER TAUREAU GEMEAUX CANCER LION VIERGE BALANCE SCORPION SAGITTAIRE CAPRICORNE VERSEAU POISSONS; do echo "  \"${SIGNE,,}\": \"$(cat website.html |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }')\"," >> docs/jour_tmp.json ; done
+        sed -i '$ s/.$//' docs/jour_tmp.json
+        echo "}" >> docs/jour_tmp.json
     # lint + copie + clean
     - name: Commit JSON
       run: |
