@@ -19,16 +19,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: get Website
+    - name: Get Website
       run: curl -s $URL -o $FILE_WEBSITE
-    - name: extract data
+    - name: Create JSON
       run: |
         echo "{" > $FILE_TMP
         echo "  \"date\": \"$(date +%F)\"," >> $FILE_TMP
         for SIGNE in $LIST_SIGNES; do echo "  \"${SIGNE,,}\": \"$(cat $FILE_WEBSITE |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }')\"," >> $FILE_TMP ; done
         sed -i '$ s/.$//' $FILE_TMP
         echo "}" >> $FILE_TMP
-    - name: recode UTF8
+    - name: Recode UTF8
       run: |
         sudo apt-get update
         sudo apt-get -y install recode
@@ -54,18 +54,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: get Website
+    - name: Get Website
       run: |
         for SIGNE in $LIST_SIGNES; do curl -s http://www.astroo.com/horoscopes/horoscope_hebdo_${SIGNE,,}.php -o ${SIGNE}.html; done
-    - name: extract data
+    - name: Extract data
       run: |
-        ## curl -s http://www.astroo.com/horoscopes/horoscope_hebdo_vierge.php |awk -v RS="</*td>" '/class="hhte" valign="top"/{if (++n == 1) print $0}' |sed 's/<td class="hhte" valign="top">//g' |sed 's/<br>//g' |tr -d '\n'
         for SIGNE in $LIST_SIGNES; do cat ${SIGNE}.html |awk -v RS="</*td>" '/class="hhte" valign="top"/{if (++n == 1) print $0}' |sed 's/<td class="hhte" valign="top">//g' |sed 's/<br>//g' |tr -d '\n' > ${SIGNE}_CADRAN_1 ; done
-        ls -l 
-        cat VIERGE_CADRAN_1
+        for SIGNE in $LIST_SIGNES; do cat ${SIGNE}.html |awk -v RS="</*td>" '/class="hhte" valign="top"/{if (++n == 2) print $0}' |sed 's/<td class="hhte" valign="top">//g' |sed 's/<br>//g' |tr -d '\n' > ${SIGNE}_CADRAN_2 ; done
+        for SIGNE in $LIST_SIGNES; do cat ${SIGNE}.html |awk -v RS="</*td>" '/class="hhte" valign="top"/{if (++n == 3) print $0}' |sed 's/<td class="hhte" valign="top">//g' |sed 's/<br>//g' |tr -d '\n' > ${SIGNE}_CADRAN_3 ; done
+    - name: Create JSON
+      run: |
         echo "{" > $FILE_TMP
         echo "  \"date\": \"$(date +%F)\"," >> $FILE_TMP
-        #for SIGNE in $LIST_SIGNES; do echo "  \"${SIGNE,,}\": \"$(cat ${SIGNE}.html |awk -v RS="</*td>" '/class="hhte" valign="top"/{if (++n == 1) print $0}'\"," >> $FILE_TMP ; done
+        for SIGNE in $LIST_SIGNES; do echo "  \"${SIGNE,,}\": [\"$(cat ${SIGNE}_CADRAN_1\", \"$(cat ${SIGNE}_CADRAN_2\", \"$(cat ${SIGNE}_CADRAN_3\" ]," >> $FILE_TMP ; done
         sed -i '$ s/.$//' $FILE_TMP
         echo "}" >> $FILE_TMP
     - name: recode UTF8
