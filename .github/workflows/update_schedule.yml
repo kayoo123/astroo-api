@@ -66,7 +66,7 @@ jobs:
       run: |
         echo "{" > $FILE_TMP
         echo "  \"date\": \"$(date +%F)\"," >> $FILE_TMP
-        for SIGNE in $LIST_SIGNES; do echo "  \"${SIGNE,,}\": [\"$(cat ${SIGNE}_CADRAN_1\", \"$(cat ${SIGNE}_CADRAN_2\", \"$(cat ${SIGNE}_CADRAN_3\" ]," >> $FILE_TMP ; done
+        for SIGNE in $LIST_SIGNES; do echo "  \"${SIGNE,,}\": [\"$(cat ${SIGNE}_CADRAN_1)\", \"$(cat ${SIGNE}_CADRAN_2)\", \"$(cat ${SIGNE}_CADRAN_3)\" ]," >> $FILE_TMP ; done
         sed -i '$ s/.$//' $FILE_TMP
         echo "}" >> $FILE_TMP
     - name: recode UTF8
