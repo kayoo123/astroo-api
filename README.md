@@ -12,7 +12,7 @@ Ce projet a pour but de générer un json permettant d'obtenir l'horoscope astro
 
 #### Usage : 
 - Avec `Curl` et `jq`:
-```
+```bash
 curl -s https://kayoo123.github.io/astroo-api/hebdomadaire.json | jq .vierge[2]
 ```
 
