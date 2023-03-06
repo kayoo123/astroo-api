@@ -1,9 +1,9 @@
 ---
 name: "Update daily - Horoscope"
-#on: push
-on:   
-  schedule:
-    - cron: "0 1 * * *"
+on: push
+#on:   
+#  schedule:
+#    - cron: "0 1 * * *"
 
 env:
   FILE_WEBSITE: website.html
@@ -60,6 +60,9 @@ jobs:
     - name: extract data
       run: |
         ## curl -s http://www.astroo.com/horoscopes/horoscope_hebdo_vierge.php |awk -v RS="</*td>" '/class="hhte" valign="top"/{if (++n == 1) print $0}' |sed 's/<td class="hhte" valign="top">//g' |sed 's/<br>//g' |tr -d '\n'
+        for SIGNE in $LIST_SIGNES; do cat ${SIGNE}.html |awk -v RS="</*td>" '/class="hhte" valign="top"/{if (++n == 1) print $0}' |sed 's/<td class="hhte" valign="top">//g' |sed 's/<br>//g' |tr -d '\n' > ${SIGNE}_CADRAN_1 ; done
+        ls -l 
+        cat VIERGE_CADRAN_1
         echo "{" > $FILE_TMP
         echo "  \"date\": \"$(date +%F)\"," >> $FILE_TMP
         #for SIGNE in $LIST_SIGNES; do echo "  \"${SIGNE,,}\": \"$(cat ${SIGNE}.html |awk -v RS="</*td>" '/class="hhte" valign="top"/{if (++n == 1) print $0}'\"," >> $FILE_TMP ; done
