@@ -63,9 +63,7 @@ jobs:
         for SIGNE in $LIST_SIGNES; do cat ${SIGNE}.html |awk -v RS="</*td>" '/class="hhte" valign="top"/{if (++n == 2) print $0}' |sed 's/<td class="hhte" valign="top">//g' |sed 's/<br>//g' |tr -d '\n' > ${SIGNE}_CADRAN_2 ; done
         for SIGNE in $LIST_SIGNES; do cat ${SIGNE}.html |awk -v RS="</*td>" '/class="hhte" valign="top"/{if (++n == 3) print $0}' |sed 's/<td class="hhte" valign="top">//g' |sed 's/<br>//g' |tr -d '\n' > ${SIGNE}_CADRAN_3 ; done
         sed -i 's/^\ *//g' *CADRAN*
-        cat GEMEAUX_CADRAN_1
-        cat GEMEAUX_CADRAN_2
-        cat GEMEAUX_CADRAN_3
+        sed -i 's/"/\"/g' *CADRAN*
     - name: Create JSON
       run: |
         echo "{" > $FILE_TMP
