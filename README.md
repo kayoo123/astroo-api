@@ -7,7 +7,7 @@ Ce projet a pour but de générer un json permettant d'obtenir l'horoscope astro
 
 #### Urls :
 - [x] Aujourd'hui : https://kayoo123.github.io/astroo-api/jour.json
-- [ ] Semaine : https://kayoo123.github.io/astroo-api/semaine.json
+- [x] Semaine : https://kayoo123.github.io/astroo-api/semaine.json
 - [ ] Mois : https://kayoo123.github.io/astroo-api/mois.json
 
 Source : www.astroo.com
