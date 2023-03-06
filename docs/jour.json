@@ -1,15 +1,15 @@
 {
   "date": "2023-03-06",
-  "belier": "Vous avez tendance à vous mettre en retrait, et la Pleine Lune ne réussit pas à vous redonner la pêche. Allez! Demain promettez-vous de sortir de votre grotte. ",
-  "taureau": "Vos amis vous réclament mais ce sont vos enfants - ou vos amours - qui sont préoccupants. Réglez d'abord vos histoires affectives avant de rejoindre la sphère amicale. ",
-  "gemeaux": "Vous parvenez au but que vous vous étiez fixé le mois dernier et vous avez envie de fêter ça. Et si vous organisiez une fête à la maison. C'est la Pleine Lune! ",
-  "cancer": "Vous avez la bougeotte et vous n'arrêtez pas de parler à votre entourage de votre envie d'élargir votre horizon. Et si vous programmiez un beau voyage? ",
-  "lion": "Depuis un certain temps, vous ne pensez qu'à l'argent ou au sexe, et cela vous stresse parfois. Néanmoins, vous savez toujours tirer votre épingle du jeu... ",
-  "vierge": "Depuis quelque temps, vous vous ouvrez aux autres et vous découvrez l'écoute, le sens du partage. Cela vous permet de faire quelques prises de conscience... ",
-  "balance": "Le travail c'est la santé, mais trop de travail c'est y laisser sa santé! Alors, accordez-vous un moment de détente de temps à autre, dans le calme et le silence... ",
-  "scorpion": "N'ayez crainte de mettre en avant votre créativité, que tout le monde a l'air d'apprécier. Vos amis peuvent vous aider à concrétiser vos projets. ",
-  "sagittaire": "Voilà une Pleine Lune favorable à une réunion en famille, et nul doute que l'on évoquera votre carrière professionnelle. Tirez-en les conclusions qui s'imposent... ",
-  "capricorne": "Vous rêvez d'évasion et de vacances ? Pourquoi ne pas planifier un week-end prolongé, et même un petit voyage ? Parlez-en autour de vous ou à votre partenaire. ",
-  "verseau": "En ce moment, vos pensées sont essentiellement orientées vers les acquisitions et les gains personnels. D'autant que, aujourd'hui, les rentrées d'argent sont à l'ordre du jour. ",
-  "poissons": "Vous ne ratez pas une occasion de vous mettre en valeur et c'est très bien. Mais tenez compte tout de même de l'avis de votre conjoint ou de vos partenaires sociaux. "
+  "belier": "Vous avez tendance à vous mettre en retrait, et la Pleine Lune ne réussit pas à vous redonner la pêche. Allez! Demain promettez-vous de sortir de votre grotte.  |sed 's/\ *$//g'",
+  "taureau": "Vos amis vous réclament mais ce sont vos enfants - ou vos amours - qui sont préoccupants. Réglez d'abord vos histoires affectives avant de rejoindre la sphère amicale.  |sed 's/\ *$//g'",
+  "gemeaux": "Vous parvenez au but que vous vous étiez fixé le mois dernier et vous avez envie de fêter ça. Et si vous organisiez une fête à la maison. C'est la Pleine Lune!  |sed 's/\ *$//g'",
+  "cancer": "Vous avez la bougeotte et vous n'arrêtez pas de parler à votre entourage de votre envie d'élargir votre horizon. Et si vous programmiez un beau voyage?  |sed 's/\ *$//g'",
+  "lion": "Depuis un certain temps, vous ne pensez qu'à l'argent ou au sexe, et cela vous stresse parfois. Néanmoins, vous savez toujours tirer votre épingle du jeu...  |sed 's/\ *$//g'",
+  "vierge": "Depuis quelque temps, vous vous ouvrez aux autres et vous découvrez l'écoute, le sens du partage. Cela vous permet de faire quelques prises de conscience...  |sed 's/\ *$//g'",
+  "balance": "Le travail c'est la santé, mais trop de travail c'est y laisser sa santé! Alors, accordez-vous un moment de détente de temps à autre, dans le calme et le silence...  |sed 's/\ *$//g'",
+  "scorpion": "N'ayez crainte de mettre en avant votre créativité, que tout le monde a l'air d'apprécier. Vos amis peuvent vous aider à concrétiser vos projets.  |sed 's/\ *$//g'",
+  "sagittaire": "Voilà une Pleine Lune favorable à une réunion en famille, et nul doute que l'on évoquera votre carrière professionnelle. Tirez-en les conclusions qui s'imposent...  |sed 's/\ *$//g'",
+  "capricorne": "Vous rêvez d'évasion et de vacances ? Pourquoi ne pas planifier un week-end prolongé, et même un petit voyage ? Parlez-en autour de vous ou à votre partenaire.  |sed 's/\ *$//g'",
+  "verseau": "En ce moment, vos pensées sont essentiellement orientées vers les acquisitions et les gains personnels. D'autant que, aujourd'hui, les rentrées d'argent sont à l'ordre du jour.  |sed 's/\ *$//g'",
+  "poissons": "Vous ne ratez pas une occasion de vous mettre en valeur et c'est très bien. Mais tenez compte tout de même de l'avis de votre conjoint ou de vos partenaires sociaux.  |sed 's/\ *$//g'"
 }
