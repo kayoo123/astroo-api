@@ -1,9 +1,9 @@
 ---
 name: "Update daily - Horoscope"
-#on: push
-on:   
-  schedule:
-    - cron: "20 1 * * *"
+on: push
+#on:   
+#  schedule:
+#    - cron: "20 1 * * *"
 
 env:
   FILE_WEBSITE: website.html
@@ -25,7 +25,7 @@ jobs:
       run: |
         echo "{" > $FILE_TMP
         echo "  \"date\": \"$(date +%F)\"," >> $FILE_TMP
-        for SIGNE in $LIST_SIGNES; do echo "  \"${SIGNE,,}\": \"$(cat $FILE_WEBSITE |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }' |sed 's/\ *$//g')\"," >> $FILE_TMP ; done
+        for SIGNE in $LIST_SIGNES; do echo "  \"${SIGNE,,}\": \"$(cat $FILE_WEBSITE |grep "$SIGNE</a>" |awk -F'</span>' '{ print $2 }' |sed 's/"/\\"/g' |sed 's/\ *$//g')\"," >> $FILE_TMP ; done
         sed -i '$ s/.$//' $FILE_TMP
         echo "}" >> $FILE_TMP
     - name: Recode UTF8
